@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Heshani & Sarith</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Georgia', serif;
+    background: #fdfaf6;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
+    height: 100vh;
+    background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.7)),
+    url('https://raw.githubusercontent.com/sarithwiksitha98/wedding-invitation/main/WhatsApp%20Image%202026-05-05%20at%2010.04.03.jpeg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.hero h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 70px;
+    color: #c6a55b;
+}
+
+.hero p {
+    letter-spacing: 4px;
+    color: #555;
+}
+
+/* COUNTDOWN */
+#countdown {
+    font-size: 20px;
+    color: #555;
+    margin-top: 10px;
+}
+
+/* GUEST DISPLAY */
+#guestDisplay {
+    margin-top: 10px;
+    font-size: 22px;
+    color: #555;
+}
+
+/* ADMIN PANEL (HIDDEN BY DEFAULT) */
+#adminPanel {
+    display: none;
+    margin-top: 10px;
+}
+
+/* INPUT BOX */
+.input-box {
+    padding: 12px;
+    width: 250px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+/* BUTTON */
+.btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    border-radius: 30px;
+    background: linear-gradient(to right, #d4af37, #c6a55b);
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}
+
+/* SECTIONS */
+.section {
+    padding: 70px 20px;
+}
+
+h2 {
+    color: #555;
+}
+
+/* DETAILS */
+.details {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    display: inline-block;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    width: 85%;
+}
+
+/* HEARTS */
+.heart {
+    position: fixed;
+    bottom: -10px;
+    color: #ff4d6d;
+    animation: floatUp 6s linear infinite;
+    font-size: 20px;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="hero">
+
+    <h1>Heshani & Sarith</h1>
+    <p>ENGAGEMENT CEREMONY</p>
+
+    <!-- COUNTDOWN -->
+    <div id="countdown"></div>
+
+    <!-- Guest preview -->
+    <div id="guestDisplay"></div>
+
+    <!-- ADMIN PANEL -->
+    <div id="adminPanel">
+        <input id="gname" class="input-box" placeholder="Enter Guest Name">
+        <input id="gnum" class="input-box" placeholder="WhatsApp Number (947xxxxxxxx)">
+        <br>
+        <button class="btn" onclick="sendFullInvite()">Send Invitation</button>
+    </div>
+
+</div>
+
+<!-- STORY -->
+<div class="section">
+<h2>Our Story</h2>
+<p>
+Three years ago, our journey quietly began, and what started as a simple connection has grown into something truly beautiful.  
+Through every moment we’ve shared—filled with love, laughter, and understanding—we’ve built a bond that became stronger with time.  
+Today, we celebrate three wonderful years of love and step forward into a lifetime of togetherness and dreams.
+</p>
+</div>
+
+<!-- MOMENTS -->
+<div class="section">
+<h2>Moments</h2>
+<img width="300"
+src="https://raw.githubusercontent.com/sarithwiksitha98/wedding-invitation/main/WhatsApp%20Image%202026-05-05%20at%2010.04.03.jpeg">
+</div>
+
+<!-- DETAILS -->
+<div class="section">
+<h2>Event Details</h2>
+
+<div class="details">
+<p><strong>Date:</strong> 29th May 2026</p>
+<p><strong>Time:</strong> 9.00 AM onwards</p>
+<p><strong>Venue:</strong> River's Edge Hotel, Madampe, Sri Lanka</p>
+
+<iframe
+src="https://www.google.com/maps?q=Rivers%20Edge%20Hotel%20Madampe%20Sri%20Lanka&output=embed"
+width="100%" height="250" style="border:0;border-radius:15px;">
+</iframe>
+
+</div>
+</div>
+
+<script>
+
+/* SEND INVITATION */
+function sendFullInvite(){
+    let name = document.getElementById("gname").value;
+    let number = document.getElementById("gnum").value;
+
+    if(!name || !number){
+        alert("Please enter both name and number");
+        return;
+    }
+
+    document.getElementById("guestDisplay").innerHTML =
+    "Dear " + name + ", you are warmly invited 💛";
+
+    let baseLink = "https://sarithwiksitha98.github.io/Engagement-Ceremony-Invitation/";
+    let inviteLink = baseLink + "?name=" + encodeURIComponent(name);
+
+    let msg =
+`💍 Heshani & Sarith Engagement Invitation
+
+Dear ${name}, you are warmly invited 💛
+
+Click here:
+${inviteLink}`;
+
+    let url = "https://wa.me/" + number + "?text=" + encodeURIComponent(msg);
+    window.open(url);
+}
+
+/* PAGE LOAD LOGIC */
+window.onload = function(){
+    let params = new URLSearchParams(window.location.search);
+    let guest = params.get("name");
+
+    if(guest && guest.trim() !== ""){
+        // Guest view
+        document.getElementById("guestDisplay").innerHTML =
+        "Dear " + guest + ", you are warmly invited 💛";
+
+        document.getElementById("adminPanel").style.display = "none";
+    } else {
+        // Admin view
+        document.getElementById("adminPanel").style.display = "block";
+    }
+}
+
+/* COUNTDOWN */
+let eventDate = new Date("May 29, 2026 09:00:00").getTime();
+
+setInterval(function(){
+    let now = new Date().getTime();
+    let distance = eventDate - now;
+
+    if(distance < 0){
+        document.getElementById("countdown").innerHTML = "🎉 Event Started!";
+        return;
+    }
+
+    let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+    document.getElementById("countdown").innerHTML =
+    "⏳ " + days + " Days • " + hours + " Hours • " + minutes + " Minutes";
+}, 1000);
+
+/* HEARTS */
+function createHeart(){
+    let heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤";
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (15 + Math.random() * 20) + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}
+
+setInterval(createHeart, 500);
+
+</script>
+
+</body>
+</html>
